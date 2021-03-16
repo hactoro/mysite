@@ -21,12 +21,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#a-b@7912w-q-cwliqi9qstybpqrv^y8-_v&cj5517f&1k)$_t'
+# SECRET_KEY = '#a-b@7912w-q-cwliqi9qstybpqrv^y8-_v&cj5517f&1k)$_t'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '(#a-b@7912w-q-cwliqi9qstybpqrv^y8-_v&cj5517f&1k)$_t)w')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG= bool(os.environ.get('DJANGO_DEBUG',True))
 
-ALLOWED_HOSTS = ['192.168.35.127','localhost','128.0.0.1']
+ALLOWED_HOSTS = ['192.168.35.127','localhost','127.0.0.1']
 
 
 # Application definition
@@ -39,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'first.apps.FirstConfig',
+    'pybo.apps.PyboConfig',
+    'common.apps.CommonConfig',
 
 ]
 
@@ -68,6 +72,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{
+                'pybo_filter' : 'pybo.templatetags.pybo_filter',
+            }
         },
     },
 ]
@@ -135,3 +142,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+ROOT_DIR = os.path.dirname(BASE_DIR)
+STATIC_ROOT = os.path.join(ROOT_DIR, '.static_root')
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
